@@ -4,12 +4,13 @@ import SwiftUI
 public class Console: ObservableObject {
 
     public struct Record {
-        public var date: Date
+        public var date: Date = Date()
         public var key: String
         public var value: Any
-        public var updateCount: Int
-        public var repeatCount: Int
-        public var formatter: Optional<(Any) -> AnyView>
+        public var historyValues: [(Date, Any)] = []
+        public var updateCount: Int = 0
+        public var repeatCount: Int = 0
+        public var formatter: Optional<(Any) -> AnyView> = nil
     }
 
 
@@ -31,7 +32,7 @@ public class Console: ObservableObject {
     }
 
     private func post_(value: Any, for key: String) {
-        var record = records[key, default: Record(date: .now, key: key, value: value, updateCount: 0, repeatCount: 0, formatter: nil)]
+        var record = records[key, default: Record(key: key, value: value)]
         if let oldValue = records[key]?.value, oldValue as? AnyHashable == record.value as? AnyHashable {
             record.repeatCount += 1
         }

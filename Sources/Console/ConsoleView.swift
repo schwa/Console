@@ -8,6 +8,9 @@ public struct ConsoleView: View {
     @State
     var pinnedKeys: Set<String> = []
 
+    @State
+    var hiddenKeys: Set<String> = []
+
     public init() {
     }
 
@@ -32,6 +35,21 @@ public struct ConsoleView: View {
             }
         }
         .listStyle(.bordered(alternatesRowBackgrounds: true))
+        .toolbar {
+            Button("Clear") {
+            }
+
+            Picker("Sort By", selection: .constant("key")) {
+                Text("Key").tag("key")
+                Text("Value").tag("value")
+                Text("Updated").tag("updated")
+            }
+            .toolbarTitleMenu {
+                Text("Title")
+            }
+
+        }
+
     }
 
     @ViewBuilder
@@ -61,6 +79,9 @@ public struct ConsoleView: View {
             }
         }
         .labeledContentStyle(MyLabeledContentStyle(labelWidth: 60))
+        .contextMenu {
+            Button(pinnedKeys.contains(record.key) ? "Unpin" : "Pin", action: { pinnedKeys.toggle(record.key)})
+        }
 
     }
 
