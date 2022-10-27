@@ -35,8 +35,9 @@ public extension Console {
     }
 
     func registerDefaultFormatters() {
-        register(type: Float.self) { value in
-            Text("\(value, format: .number)").monospacedDigit()
+        register(type: Float.self, format: .number)
+        register(type: String.self) { value in
+            Text(verbatim: value)
         }
     }
 }
