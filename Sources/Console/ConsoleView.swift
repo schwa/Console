@@ -11,24 +11,27 @@ public struct ConsoleView: View {
     @State
     var hiddenKeys: Set<String> = []
 
+    @State
+    var sortBy: String = "key"
+
     public init() {
     }
 
     public var body: some View {
         List {
-            if !pinnedKeys.isEmpty {
+            let pinnedRecords = records(pinned: true)
+            if !pinnedRecords.isEmpty {
                 Section("Pinned") {
-                    let keys = Array(pinnedKeys.sorted())
-                    ForEach(keys, id: \.self) { key in
-                        let record = console.records[key]!
+                    ForEach(pinnedRecords, id: \.key) { record in
                         row(for: record)
                     }
                 }
             }
-            let items = Array(console.records.filter({ !pinnedKeys.contains($0.key)}).sorted(by: { $0.key < $1.key }))
-            if !items.isEmpty {
+
+            let unpinnedRecord = records(pinned: false)
+            if !unpinnedRecord.isEmpty {
                 Section("Records") {
-                    ForEach(items, id: \.key) { key, record in
+                    ForEach(unpinnedRecord, id: \.key) { record in
                         row(for: record)
                     }
                 }
@@ -38,10 +41,11 @@ public struct ConsoleView: View {
         .toolbar {
             Button("Clear") {
             }
-
-            Picker("Sort By", selection: .constant("key")) {
+            Button("Unhide Everything") {
+                hiddenKeys = []
+            }
+            Picker("Sort By", selection: $sortBy) {
                 Text("Key").tag("key")
-                Text("Value").tag("value")
                 Text("Updated").tag("updated")
             }
             .toolbarTitleMenu {
@@ -49,7 +53,29 @@ public struct ConsoleView: View {
             }
 
         }
+    }
 
+    func records(pinned: Bool) -> [Console.Record] {
+        console.records.values
+        .filter { record in
+            !hiddenKeys.contains(record.key)
+        }
+        .filter { record in
+            pinnedKeys.contains(record.key) == pinned
+        }
+        .sorted { lhs, rhs in
+            switch sortBy {
+            case "key":
+                return lhs.key < rhs.key
+            case "updated":
+                return lhs.date < rhs.date
+            default:
+                fatalError()
+
+            }
+
+
+        }
     }
 
     @ViewBuilder
@@ -81,6 +107,9 @@ public struct ConsoleView: View {
         .labeledContentStyle(MyLabeledContentStyle(labelWidth: 60))
         .contextMenu {
             Button(pinnedKeys.contains(record.key) ? "Unpin" : "Pin", action: { pinnedKeys.toggle(record.key)})
+            Button("Hide") {
+                hiddenKeys.insert(record.key)
+            }
         }
 
     }
