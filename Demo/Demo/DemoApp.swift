@@ -8,10 +8,17 @@ struct DemoApp: App {
     var openWindow
 
     var body: some Scene {
-        WindowGroup {
+        Window("Demo", id: "demo") {
             ContentView()
         }
-
+        .commands {
+            CommandMenu("Debug") {
+                Button("Show Demo") {
+                    openWindow(id: "demo")
+                }
+                .keyboardShortcut(.init("1", modifiers: .command))
+            }
+        }
         Window("Console", id: "console") {
             ConsoleView()
         }
@@ -20,7 +27,7 @@ struct DemoApp: App {
                 Button("Show Console") {
                     openWindow(id: "console")
                 }
-                .keyboardShortcut(.init("1", modifiers: .command))
+                .keyboardShortcut(.init("I", modifiers: .command))
             }
         }
 
