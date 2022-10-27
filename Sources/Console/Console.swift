@@ -2,10 +2,21 @@ import simd
 import SwiftUI
 
 public class Console: ObservableObject {
+
+    public struct Record {
+        public var date: Date
+        public var key: String
+        public var value: Any
+        public var updateCount: Int
+        public var repeatCount: Int
+        public var formatter: Optional<(Any) -> AnyView>
+    }
+
+
     public static let shared = Console()
 
     @Published
-    public private(set) var values: [String: Any] = [:]
+    public private(set) var records: [String: Record] = [:]
 
     public private(set) var formatters: [AnyHashable: (Any) -> AnyView] = [:]
 
@@ -14,10 +25,26 @@ public class Console: ObservableObject {
     }
 
     public func post(value: Any, for key: String) {
-        values[key] = value
+        DispatchQueue.main.async { [weak self] in
+            self?.post_(value: value, for: key)
+        }
     }
 
-    public func register<T>(type: T.Type, view: @escaping (T) -> some View) {
+    private func post_(value: Any, for key: String) {
+        var record = records[key, default: Record(date: .now, key: key, value: value, updateCount: 0, repeatCount: 0, formatter: nil)]
+        if let oldValue = records[key]?.value, oldValue as? AnyHashable == record.value as? AnyHashable {
+            record.repeatCount += 1
+        }
+
+        record.updateCount += 1
+        records[key] = record
+    }
+}
+
+// MARK: -
+
+public extension Console {
+    func register<T>(type: T.Type, view: @escaping (T) -> some View) {
         formatters[ObjectIdentifier(type)] = { value in
             // swiftlint:disable:next force_cast
             let value = value as! T
@@ -25,9 +52,6 @@ public class Console: ObservableObject {
         }
     }
 
-}
-
-public extension Console {
     func register<F>(type: F.FormatInput.Type, format: F) where F : FormatStyle, F.FormatInput : Equatable, F.FormatOutput == String {
         register(type: type) { value in
             Text(value, format: format)
@@ -42,11 +66,13 @@ public extension Console {
     }
 }
 
+// MARK: -
+
 public func console(value: Any, for key: String) {
-    DispatchQueue.main.async {
-        Console.shared.post(value: value, for: key)
-    }
+    Console.shared.post(value: value, for: key)
 }
+
+// MARK: -
 
 public extension View {
     func registerConsoleView<T>(type: T.Type, view: @escaping (T) -> some View) -> some View {
@@ -57,33 +83,5 @@ public extension View {
     func registerConsoleFormatStyle<F>(type: F.FormatInput.Type, format: F) -> some View where F : FormatStyle, F.FormatInput : Equatable, F.FormatOutput == String {
         Console.shared.register(type: type, format: format)
         return self
-    }
-}
-
-// MARK: -
-
-public struct ConsoleView: View {
-    @StateObject
-    var console = Console.shared
-
-    public init() {
-
-    }
-
-    public var body: some View {
-        if !console.values.isEmpty {
-            let items = Array(console.values.sorted(by: { $0.key < $1.key }))
-            List(items, id: \.key) { key, value in
-                if let view = console.formatters[ObjectIdentifier(type(of: value))] {
-                    HStack(alignment: .top, spacing: 0) {
-                        Text("\(key) = ")
-                        view(value)
-                    }
-                } else {
-                    Text("\(key) = \(String(describing: value)) \(String(describing: type(of: value)))")
-                        .foregroundColor(.red)
-                }
-            }
-        }
     }
 }
