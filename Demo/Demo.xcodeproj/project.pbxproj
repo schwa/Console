@@ -21,7 +21,7 @@
 		45BC557D290AF8BA008742F3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		45BC557F290AF8BA008742F3 /* Demo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Demo.entitlements; sourceTree = "<group>"; };
 		45BC5581290AF8BA008742F3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		45BC5589290AF8E7008742F3 /* Console */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Console; path = ..; sourceTree = "<group>"; };
+		45D3B07A290C65EA0050EF9E /* Console */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Console; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,7 +77,7 @@
 		45BC5588290AF8E7008742F3 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				45BC5589290AF8E7008742F3 /* Console */,
+				45D3B07A290C65EA0050EF9E /* Console */,
 			);
 			name = Packages;
 			sourceTree = "<group>";

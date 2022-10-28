@@ -1,24 +1,31 @@
 import simd
 import SwiftUI
+import os.log
+
+private let logger: Logger? = Logger()
 
 public class Console: ObservableObject {
 
     public struct Record {
-        public var date: Date = Date()
         public var key: String
         public var value: Any
+        public var date: Date = Date()
+        public var currentDate: Date
         public var historyValues: [(Date, Any)] = []
         public var updateCount: Int = 0
         public var repeatCount: Int = 0
         public var formatter: Optional<(Any) -> AnyView> = nil
     }
 
-
     public static let shared = Console()
 
     @Published
     public private(set) var records: [String: Record] = [:]
 
+    @Published
+    public var captureHistoryValuesForKeys: Set<String> = []
+
+    @Published
     public private(set) var formatters: [AnyHashable: (Any) -> AnyView] = [:]
 
     public init() {
@@ -32,10 +39,26 @@ public class Console: ObservableObject {
     }
 
     private func post_(value: Any, for key: String) {
-        var record = records[key, default: Record(key: key, value: value)]
-        if let oldValue = records[key]?.value, oldValue as? AnyHashable == record.value as? AnyHashable {
-            record.repeatCount += 1
+        let now = Date.now
+        var record = records[key, default: Record(key: key, value: value, currentDate: now)]
+        record.value = value
+        record.currentDate = now
+
+        if let oldRecord = records[key] {
+            if oldRecord.value as? AnyHashable == record.value as? AnyHashable {
+                record.repeatCount += 1
+            }
         }
+        else {
+            // TODO
+            captureHistoryValuesForKeys.insert(key)
+        }
+
+        if captureHistoryValuesForKeys.contains(key) {
+            record.historyValues.append((record.currentDate, record.value))
+            logger?.log("Capturing history for \(key) \(record.historyValues.count)")
+        }
+
 
         record.updateCount += 1
         records[key] = record
