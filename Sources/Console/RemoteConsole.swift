@@ -1,8 +1,21 @@
-//
-//  File.swift
-//  
-//
-//  Created by Jonathan Wight on 10/28/22.
-//
+import MultipeerConnectivity
 
-import Foundation
+import Everything
+
+public class RemoteConsole {
+
+}
+
+@MainActor
+public class Server {
+
+    let helper = MultipeerHelper(serviceType: "console")
+
+    init() {
+        print(helper)
+        
+    }
+
+}
+
+

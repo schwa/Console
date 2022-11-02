@@ -2,12 +2,15 @@ import SwiftUI
 import Everything
 import Charts
 
+@MainActor
 class Model: ObservableObject {
     @Published
     var pinnedKeys: Set<String> = []
 
     @Published
     var hiddenKeys: Set<String> = []
+
+    let server = Server()
 }
 
 
