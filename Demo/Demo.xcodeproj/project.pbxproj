@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		45154D2729137203001F7A3F /* Extendable in Frameworks */ = {isa = PBXBuildFile; productRef = 45154D2629137203001F7A3F /* Extendable */; };
+		45154D2929137203001F7A3F /* ExtendableViews in Frameworks */ = {isa = PBXBuildFile; productRef = 45154D2829137203001F7A3F /* ExtendableViews */; };
 		45BC557A290AF8B9008742F3 /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BC5579290AF8B9008742F3 /* DemoApp.swift */; };
 		45BC557C290AF8B9008742F3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BC557B290AF8B9008742F3 /* ContentView.swift */; };
 		45BC557E290AF8BA008742F3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 45BC557D290AF8BA008742F3 /* Assets.xcassets */; };
@@ -29,7 +31,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45154D2729137203001F7A3F /* Extendable in Frameworks */,
 				45BC558C290AF915008742F3 /* Console in Frameworks */,
+				45154D2929137203001F7A3F /* ExtendableViews in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +111,8 @@
 			name = Demo;
 			packageProductDependencies = (
 				45BC558B290AF915008742F3 /* Console */,
+				45154D2629137203001F7A3F /* Extendable */,
+				45154D2829137203001F7A3F /* ExtendableViews */,
 			);
 			productName = Demo;
 			productReference = 45BC5576290AF8B9008742F3 /* Demo.app */;
@@ -136,6 +142,9 @@
 				Base,
 			);
 			mainGroup = 45BC556D290AF8B9008742F3;
+			packageReferences = (
+				45154D2529137203001F7A3F /* XCRemoteSwiftPackageReference "Extendable" */,
+			);
 			productRefGroup = 45BC5577290AF8B9008742F3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -378,7 +387,28 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		45154D2529137203001F7A3F /* XCRemoteSwiftPackageReference "Extendable" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChimeHQ/Extendable";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		45154D2629137203001F7A3F /* Extendable */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45154D2529137203001F7A3F /* XCRemoteSwiftPackageReference "Extendable" */;
+			productName = Extendable;
+		};
+		45154D2829137203001F7A3F /* ExtendableViews */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45154D2529137203001F7A3F /* XCRemoteSwiftPackageReference "Extendable" */;
+			productName = ExtendableViews;
+		};
 		45BC558B290AF915008742F3 /* Console */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Console;

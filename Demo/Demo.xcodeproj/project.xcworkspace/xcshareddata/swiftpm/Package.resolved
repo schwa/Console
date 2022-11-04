@@ -8,6 +8,15 @@
         "branch" : "main",
         "revision" : "b600e5024768c6a369d78e6532aa1335e6d3b060"
       }
+    },
+    {
+      "identity" : "extendable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/Extendable",
+      "state" : {
+        "revision" : "1e5f8b3b4e64fcfca4bfd5b0b38679cac7ea14c9",
+        "version" : "0.1.1"
+      }
     }
   ],
   "version" : 2

@@ -1,5 +1,5 @@
 import MultipeerConnectivity
-
+import ExtensionKit
 import Everything
 
 public class RemoteConsole {

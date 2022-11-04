@@ -1,5 +1,7 @@
 import Console
 import SwiftUI
+import Extendable
+import ExtendableViews
 
 struct ContentView: View {
 
@@ -39,6 +41,8 @@ struct ContentView: View {
                 Button("Post", action: post)
                     .disabled(key.isEmpty)
             }
+
+            AppExtensionBrowserView().border(Color.red)
         }
         .padding()
         .registerConsoleView(type: Color.self) { color in
