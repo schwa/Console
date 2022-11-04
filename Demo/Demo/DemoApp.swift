@@ -21,6 +21,9 @@ struct DemoApp: App {
         }
         Window("Console", id: "console") {
             ConsoleView()
+            .onOpenURL { url in
+                print("RECEIVED \(url)")
+            }
         }
         .commands {
             CommandMenu("Debug") {
@@ -30,6 +33,5 @@ struct DemoApp: App {
                 .keyboardShortcut(.init("I", modifiers: .command))
             }
         }
-
     }
 }

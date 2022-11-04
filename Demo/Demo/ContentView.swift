@@ -42,7 +42,7 @@ struct ContentView: View {
                     .disabled(key.isEmpty)
             }
 
-            AppExtensionBrowserView().border(Color.red)
+//            AppExtensionBrowserView().border(Color.red)
         }
         .padding()
         .registerConsoleView(type: Color.self) { color in

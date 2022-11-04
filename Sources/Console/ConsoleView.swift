@@ -77,6 +77,7 @@ public struct ConsoleView: View {
             }
             .controlSize(.small)
         }
+        
     }
 
     func records(pinned: Bool) -> [Console.Record] {
