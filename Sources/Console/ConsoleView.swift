@@ -1,6 +1,6 @@
-import SwiftUI
-import Everything
 import Charts
+import Everything
+import SwiftUI
 
 @MainActor
 class Model: ObservableObject {
@@ -13,9 +13,7 @@ class Model: ObservableObject {
     let server = Server()
 }
 
-
 public struct ConsoleView: View {
-
     @StateObject
     var model = Model()
 
@@ -30,8 +28,7 @@ public struct ConsoleView: View {
     @State
     var sortBy: SortOrder = .key
 
-    public init() {
-    }
+    public init() {}
 
     public var body: some View {
         List {
@@ -54,30 +51,28 @@ public struct ConsoleView: View {
             }
         }
         .environmentObject(model)
-#if os(macOS)
-        .listStyle(.bordered(alternatesRowBackgrounds: true))
-#endif
-        .toolbar {
-            Button("Clear") {
-            }
-            .controlSize(.small)
+        #if os(macOS)
+            .listStyle(.bordered(alternatesRowBackgrounds: true))
+        #endif
+            .toolbar {
+                Button("Clear") {}
+                    .controlSize(.small)
 
-            Button("Unhide Everything") {
-                model.hiddenKeys = []
-            }
-            .controlSize(.small)
-            .disabled(model.hiddenKeys.isEmpty)
+                Button("Unhide Everything") {
+                    model.hiddenKeys = []
+                }
+                .controlSize(.small)
+                .disabled(model.hiddenKeys.isEmpty)
 
-            Picker("Sort By", selection: $sortBy) {
-                Text("Key").tag(SortOrder.key)
-                Text("Updated").tag(SortOrder.updated)
+                Picker("Sort By", selection: $sortBy) {
+                    Text("Key").tag(SortOrder.key)
+                    Text("Updated").tag(SortOrder.updated)
+                }
+                .toolbarTitleMenu {
+                    Text("Title")
+                }
+                .controlSize(.small)
             }
-            .toolbarTitleMenu {
-                Text("Title")
-            }
-            .controlSize(.small)
-        }
-        
     }
 
     func records(pinned: Bool) -> [Console.Record] {
@@ -146,8 +141,7 @@ struct RecordRow: View {
                     } label: {
                         if model.pinnedKeys.contains(record.key) {
                             Image(systemName: "pin.circle.fill").foregroundColor(.accentColor)
-                        }
-                        else {
+                        } else {
                             Image(systemName: "pin.circle")
                         }
                     }
@@ -174,10 +168,9 @@ struct RecordRow: View {
         }
         label: {
             Text(record.key)
-            .textSelection(.enabled)
+                .textSelection(.enabled)
         }
         .labeledContentStyle(MyLabeledContentStyle(labelWidth: 60))
-
     }
 
     func fallbackFormatter(_ value: Any) -> AnyView {
@@ -187,16 +180,12 @@ struct RecordRow: View {
                 Image(systemName: "exclamationmark.triangle")
                     .controlSize(.mini)
                     .help("Values of type '\(String(describing: type(of: value)))' do not have a custom formatter.")
-
             }
         )
     }
-
 }
 
-
 struct MyLabeledContentStyle: LabeledContentStyle {
-
     let labelWidth: CGFloat?
 
     func makeBody(configuration: Configuration) -> some View {
@@ -224,8 +213,7 @@ struct HistoryValueChartView: View {
             }
             .frame(width: 480, height: 480)
             .padding()
-        }
-        else {
+        } else {
             Label {
                 Text("Not all values are numeric.")
             }

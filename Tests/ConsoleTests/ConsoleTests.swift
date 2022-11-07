@@ -1,5 +1,4 @@
-import XCTest
 @testable import Console
+import XCTest
 
-final class ConsoleTests: XCTestCase {
-}
+final class ConsoleTests: XCTestCase {}

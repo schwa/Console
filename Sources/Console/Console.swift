@@ -1,20 +1,19 @@
+import os.log
 import simd
 import SwiftUI
-import os.log
 
 private let logger: Logger? = Logger()
 
 public class Console: ObservableObject {
-
     public struct Record {
         public var key: String
         public var value: Any
-        public var date: Date = Date()
+        public var date: Date = .init()
         public var currentDate: Date
         public var historyValues: [(Date, Any)] = []
         public var updateCount: Int = 0
         public var repeatCount: Int = 0
-        public var formatter: Optional<(Any) -> AnyView> = nil
+        public var formatter: (Any) -> AnyView?
     }
 
     public static let shared = Console()
@@ -48,9 +47,8 @@ public class Console: ObservableObject {
             if oldRecord.value as? AnyHashable == record.value as? AnyHashable {
                 record.repeatCount += 1
             }
-        }
-        else {
-            // TODO
+        } else {
+            // TODO:
             captureHistoryValuesForKeys.insert(key)
         }
 
@@ -58,7 +56,6 @@ public class Console: ObservableObject {
             record.historyValues.append((record.currentDate, record.value))
             logger?.log("Capturing history for \(key) \(record.historyValues.count)")
         }
-
 
         record.updateCount += 1
         records[key] = record
@@ -76,7 +73,7 @@ public extension Console {
         }
     }
 
-    func register<F>(type: F.FormatInput.Type, format: F) where F : FormatStyle, F.FormatInput : Equatable, F.FormatOutput == String {
+    func register<F>(type: F.FormatInput.Type, format: F) where F: FormatStyle, F.FormatInput: Equatable, F.FormatOutput == String {
         register(type: type) { value in
             Text(value, format: format)
         }
@@ -104,7 +101,7 @@ public extension View {
         return self
     }
 
-    func registerConsoleFormatStyle<F>(type: F.FormatInput.Type, format: F) -> some View where F : FormatStyle, F.FormatInput : Equatable, F.FormatOutput == String {
+    func registerConsoleFormatStyle<F>(type: F.FormatInput.Type, format: F) -> some View where F: FormatStyle, F.FormatInput: Equatable, F.FormatOutput == String {
         Console.shared.register(type: type, format: format)
         return self
     }

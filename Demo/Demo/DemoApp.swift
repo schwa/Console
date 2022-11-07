@@ -3,7 +3,6 @@ import SwiftUI
 
 @main
 struct DemoApp: App {
-
     @Environment(\.openWindow)
     var openWindow
 
