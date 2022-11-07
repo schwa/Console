@@ -21,9 +21,6 @@ struct DemoApp: App {
         }
         Window("Console", id: "console") {
             ConsoleView()
-            .onOpenURL { url in
-                print("RECEIVED \(url)")
-            }
         }
         .commands {
             CommandMenu("Debug") {
